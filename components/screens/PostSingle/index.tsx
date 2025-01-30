@@ -15,7 +15,7 @@ export default function PostSingle({ route }: { route: any }) {
   const Separator = () => <View style={styles.separator} />;
 
   const onBack = () => {
-    navigation.navigate('components/fastlist')
+    navigation.navigate('screens/PostList/index')
   }
 
   return (
@@ -23,16 +23,13 @@ export default function PostSingle({ route }: { route: any }) {
       <SafeAreaView style={styles.container}>
         <ItemSingle titulo={title} conteudo={content} autor={autor} />
         <Separator />
-
-
+        <Button
+          title="Login"
+          onPress={() => onBack()}
+        />
       </SafeAreaView>
     </SafeAreaProvider>
   )
-  /*<Button
-  title="Voltar"
-  onPress={() => onBack()}
-/>
-*/
 }
 
 const styles = StyleSheet.create({

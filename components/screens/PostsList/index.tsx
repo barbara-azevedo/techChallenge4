@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, StyleSheet, SafeAreaView, TouchableOpacity, View, Alert, TextInput } from 'react-native';
+import { FlatList, StyleSheet, SafeAreaView, TouchableOpacity, View, Alert, TextInput, Button } from 'react-native';
 import Item from '../../common/item';
 import getFastList, { getFastListSearch } from './api';
 import { useNavigation } from '@react-navigation/native'
-import { Post } from '@/components/common/common.entity';
-
 
 const ListScreen = () => {
     const [data, setData] = useState<any[]>([])
     const [searchPost, setUser] = useState('')
     const [refreshing, setRefreshing] = useState(false);
-
+    
+    const Separator = () => <View style={styles.separator} />;
     const navigation = useNavigation<any>();
     const linkRoute = 'screens/PostSingle/index'
 
@@ -51,17 +50,19 @@ const ListScreen = () => {
 
     const onChange = () => {
         if (searchPost !== undefined || searchPost !== '') {
-            searchSinglePost() 
+            searchSinglePost()
         } else {
             fetchData();
         }
     }
 
     async function searchSinglePost() {
-        const postSingle = await getFastListSearch({searchPost});
+        const postSingle = await getFastListSearch({ searchPost });
         setData(postSingle)
     }
-
+    const onBack = () => {
+        navigation.navigate('screens/Login/index')
+      }
     return (
         <SafeAreaView style={styles.container}>
             <TextInput style={styles.input}
@@ -90,6 +91,11 @@ const ListScreen = () => {
                 onEndReached={loadMoreData}
                 onEndReachedThreshold={0.5}
             />
+            <Separator />
+            <Button
+                title="Voltar"
+                onPress={() => onBack()}
+            />
         </SafeAreaView>
     );
 };
@@ -108,6 +114,11 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 25,
     },
+    separator: {
+        marginVertical: 8,
+        borderBottomColor: '#737373',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+      },
 });
 
 export default ListScreen;

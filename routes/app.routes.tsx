@@ -4,13 +4,16 @@ import ListScreen from '@/components/screens/PostsList'
 import Header from '@/components/Header/header'
 import { StyleSheet, Text, View } from 'react-native'
 import PostSingle from '@/components/screens/PostSingle'
+import Login from '@/components/screens/Login'
 
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
 export function AppRoutes() {
     return (
-        <Navigator screenOptions={{ headerShown: true }}>
+        <Navigator screenOptions={{ headerShown: false }}>
+            <Screen name="screens/Login/index" options={{title: 'Login'}} 
+                component={Login} />
             <Screen name="screens/PostList/index" options={{ title: 'Lista de Posts' }}
                 component={ListScreen} />
             <Screen name="screens/PostSingle/index" options={{ title: 'Post' }}

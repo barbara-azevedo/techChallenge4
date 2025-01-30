@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { Autor } from './common.entity';
-import Moment from 'moment';
+import { useNavigation } from '@react-navigation/native'
 
-Moment.locale('pt');
 const Item = ({ titulo, conteudo, autor }: { titulo: any, conteudo: any, autor: any }) => {
   const aut: Autor[] = autor;
+
+  const navigation = useNavigation<any>();
+
+  const onBack = () => {
+    navigation.navigate('screens/Login/index')
+  }
+
   return (
     <View style={styles.item}>
       <Text style={styles.title}>{titulo}</Text>
@@ -16,7 +22,7 @@ const Item = ({ titulo, conteudo, autor }: { titulo: any, conteudo: any, autor: 
       <Text>
         <Text style={styles.autorContent}>Data:  </Text><Text>{formatDate(aut[0].dtCriacao)}</Text>
       </Text>
-    </View>
+     </View>
   );
 };
 
