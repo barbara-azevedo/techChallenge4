@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import ListScreen from '@/components/PostsList/fastlist'
+import ListScreen from '@/components/screens/PostsList/fastlist'
 import Header from '@/components/Header/header'
 import { StyleSheet, Text, View } from 'react-native'
 import PostSingle from '@/components/screens/PostSingle'
@@ -11,7 +11,7 @@ const { Navigator, Screen } = createNativeStackNavigator()
 export function AppRoutes() {
     return (
         <Navigator screenOptions={{ headerShown: true }}>
-            <Screen name="components/PostList/fastlist" options={{ title: 'Lista de Posts' }}
+            <Screen name="screens/PostList/fastlist" options={{ title: 'Lista de Posts' }}
                 component={ListScreen} />
             <Screen name="screens/PostSingle/index" options={{ title: 'Post' }}
                 component={PostSingle} />

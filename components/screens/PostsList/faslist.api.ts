@@ -1,4 +1,4 @@
-import api from "../../src/api"
+import api from "../../../src/api"
 
 export default async function getFastList() {
     let results = null

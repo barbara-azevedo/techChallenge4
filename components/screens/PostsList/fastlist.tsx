@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, StyleSheet, SafeAreaView, TouchableOpacity, View, Alert } from 'react-native';
-import Item from '../common/item';
+import Item from '../../common/item';
 import getFastList from './faslist.api';
 import { useNavigation } from '@react-navigation/native'
 
