@@ -14,7 +14,6 @@ export default async function getFastList() {
 export async function getFastListSearch({searchPost}: {searchPost: any}) {
     let results = null
     try {
-        console.log('passou aqui: '+searchPost)
         const response = await api.get(`/post/findSearch/${searchPost}`);
         results = response.data
     } catch (error) {

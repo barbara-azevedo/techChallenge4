@@ -11,12 +11,12 @@ const { Navigator, Screen } = createNativeStackNavigator()
 
 export function AppRoutes() {
     return (
-        <Navigator screenOptions={{ headerShown: false }}>
-            <Screen name="screens/Login/index" options={{title: 'Login'}} 
+        <Navigator screenOptions={{}}>
+            <Screen name="screens/Login/index" options={{title: 'Login', headerShown: false}} 
                 component={Login} />
-            <Screen name="screens/PostList/index" options={{ title: 'Lista de Posts' }}
+            <Screen name="screens/PostList/index" options={{ title: 'Lista de Posts', headerShown: false }}
                 component={ListScreen} />
-            <Screen name="screens/PostSingle/index" options={{ title: 'Post' }}
+            <Screen name="screens/PostSingle/index" options={{ title: 'Post', headerShown: true }}
                 component={PostSingle} />
         </Navigator >
     )

@@ -46,5 +46,8 @@ export interface AuthorProps {
 
 export class Usuario {
   email?: string;
-  password?: string;
+  senha?: string;
+  nome?: string;
+  tipoAcesso?: string;
+  dtCriacao?: Date;
 }

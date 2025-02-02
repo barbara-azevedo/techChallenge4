@@ -19,27 +19,39 @@ export default function Login() {
 
     async function getTokenUser() {
         const token = await getToken({ email, senha });
-        const data = SessionStorage.getItem("@usuarioLogado")
-        console.log(data.tipoAcesso)
+        return token;
     }
 
+    const logout = () => {
+        SessionStorage.clear();
+    }
 
     const handleButtonPress = () => {
+        if (email === undefined || email === '' && senha === undefined || senha === '') {
+            Alert.alert('Erro:', 'Digite suas credenciais !!!');
+            return;
+        }
         getTokenUser();
-        Alert.alert(
-            'Login',
-            `Usuário autenticado com sucesso`,
-            [
-                {
-                    text: 'OK',
-                    onPress: () => console.log('OK Pressed'),
-                    style: 'cancel',
-                },
-            ],
-            { cancelable: true }
-        );
+        const data = SessionStorage.getItem("@usuarioLogado")
+        if (data) {
 
-        navigation.navigate('screens/PostList/index')
+            Alert.alert(
+                'Login',
+                `Usuário autenticado com sucesso`,
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => console.log('OK Pressed'),
+                        style: 'cancel',
+                    },
+                ],
+                { cancelable: true }
+            );
+
+            navigation.navigate('screens/PostList/index')
+        } else {
+            Alert.alert('Erro:', 'Usuário não encontrato!!!');
+        }
     }
 
     return (
@@ -50,20 +62,21 @@ export default function Login() {
         >
             <Header title={'Login'} />
             <View style={styles.content}>
-                <Text>Digite seu usuário</Text>
                 <TextInput style={styles.input} placeholder="E-mail"
                     onChangeText={(inputText) => { setUser(inputText) }}
                     value={email}
                 />
-                <Text>Digite sua senha</Text>
                 <TextInput />
-                <TextInput style={styles.input} placeholder="Senha"
+                <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}
                     onChangeText={(inputText) => { setPassword(inputText) }}
                     value={senha}
                 />
                 <StatusBar style="auto" />
                 <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
                     <Text>Enviar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={logout}>
+                    <Text>Logout</Text>
                 </TouchableOpacity>
             </View>
         </LinearGradient>
@@ -73,7 +86,7 @@ export default function Login() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 0.6,
         backgroundColor: '#fff',
     },
     content: {

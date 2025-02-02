@@ -1,8 +1,17 @@
 import { Stack } from "expo-router";
 import { Routes } from "@/routes";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Footer from "@/components/Footer/footer";
 import Header from "@/components/Header/header";
+
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  MenuProvider
+} from 'react-native-popup-menu';
+
 export default function RootLayout() {
   return (
     <View style={styles.container}>
@@ -17,7 +26,7 @@ export default function RootLayout() {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 0.9
   },
   header: {
     height: 60,
@@ -41,12 +50,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  fontBold:{
+  fontBold: {
     fontWeight: 'bold'
   },
   subTitle: {
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 12
+  },
+  button: {
+    backgroundColor: 'inherit',
+    borderColor: 'grey',
+    borderWidth: 1,
+    width: '50%',
+    alignItems: 'center',
+    padding: 5,
   }
 })
