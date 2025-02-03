@@ -18,7 +18,7 @@ export default function Usuarios() {
     const linkRoute = 'screens/PostSingle/index'
 
     useEffect(() => {
-        getUsersAll();
+        fetchData();
     }, []);
 
     const handleButtonPress = ({ item }: { item: any }) => {
@@ -68,7 +68,7 @@ export default function Usuarios() {
                 renderItem={({ item }) => {
                     return (
                         <View>
-                            <TouchableOpacity onPress={() => handleButtonPress({ item })}>
+                            <TouchableOpacity >
                                 <ItemUser
                                     user={item} />
                                 <View style={{ width: "100%", height: 1, backgroundColor: "gray" }} />
@@ -76,6 +76,7 @@ export default function Usuarios() {
                         </View>
                     );
                 }}
+                keyExtractor={item => item._id}
                 onRefresh={handleRefresh}
                 refreshing={refreshing}
                 onEndReached={loadMoreData}

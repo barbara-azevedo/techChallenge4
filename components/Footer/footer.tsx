@@ -10,17 +10,17 @@ const Footer = () => {
 };
 
 const styles = StyleSheet.create({
- footer: {
-   height: 60,
-   backgroundColor: '#f8f8f8',
-   justifyContent: 'center',
-   alignItems: 'center',
-   borderTopWidth: 1,
-   borderTopColor: '#ddd'
- },
- text: {
-   fontSize: 14
- }
-});
+  footer: {
+    height: 60,
+    backgroundColor: '#f8f8f8',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: '#ddd'
+  },
+  text: {
+    fontSize: 14
+  }
+ });
 
 export default Footer;

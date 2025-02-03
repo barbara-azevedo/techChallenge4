@@ -1,32 +1,67 @@
 import { Stack } from "expo-router";
 import { Routes } from "@/routes";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Footer from "@/components/Footer/footer";
 import Header from "@/components/Header/header";
+import { useNavigation } from '@react-navigation/native'
+import SessionStorage from "react-native-session-storage";
+import { useEffect, useState } from "react";
+import { Usuario } from "@/components/common/common.entity";
 
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-  MenuProvider
-} from 'react-native-popup-menu';
 
 export default function RootLayout() {
+
+  const [usuarioLogado, setUsuario] = useState<Usuario>()
+
+  const navigation = useNavigation<any>();
+
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    const data: Usuario = SessionStorage.getItem("@usuarioLogado")
+    setUsuario(data)
+  }
+
+  console.log(usuarioLogado)
+
   return (
-    <View style={styles.container}>
-      <Header title="EducaOnline" />
-      <View style={styles.title}>
-        <Text style={styles.fontBold}>Informações para seu estudo</Text>
-      </View>
+    <View style={styles.container} >
+      <Header title={'Home'} />
+      <Button
+        title="Add User"
+        onPress={() => { navigation.navigate('screens/Usuario/Adicionar/index') }}
+      />
+
+      <Button
+        title="Post-List"
+        onPress={() => { navigation.navigate('screens/PostList/index') }}
+      />
+
+      <Button
+        title="Usuários"
+        onPress={() => { navigation.navigate('screens/Usuario/index') }}
+      />
+
+
+      <Button
+        title="Login"
+        onPress={() => navigation.navigate('screens/Login/index')}
+      />
+
       <Routes></Routes>
-      <Footer />
+      <Footer></Footer>
     </View>
+
   )
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 0.9
+    flex: 1,
+    backgroundColor: '#f8f8f8',
+    borderBottomColor: '#ddd'
   },
   header: {
     height: 60,

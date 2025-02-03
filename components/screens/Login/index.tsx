@@ -8,30 +8,18 @@ import getToken, { findOneUser } from "./api";
 import SessionStorage from 'react-native-session-storage';
 
 export default function Login() {
-    const [email, setUser] = useState('')
-    const [senha, setPassword] = useState('')
+    const [email, inputEmail] = useState('')
+    const [senha, inputPass] = useState('')
     const [_, setText] = useState('')
     const navigation = useNavigation<any>();
 
-    const handleInputChange = (inputText: any) => {
-        setText(inputText)
-    }
-
     async function getTokenUser() {
-        const token = await getToken({ email, senha });
-        return token;
-    }
 
-    const logout = () => {
-        SessionStorage.clear();
-    }
-
-    const handleButtonPress = () => {
         if (email === undefined || email === '' && senha === undefined || senha === '') {
             Alert.alert('Erro:', 'Digite suas credenciais !!!');
             return;
         }
-        getTokenUser();
+        await getToken({ email, senha });
         const data = SessionStorage.getItem("@usuarioLogado")
         if (data) {
 
@@ -48,10 +36,18 @@ export default function Login() {
                 { cancelable: true }
             );
 
-            navigation.navigate('screens/PostList/index')
+            navigation.navigate('screens/Login/index')
         } else {
             Alert.alert('Erro:', 'Usuário não encontrato!!!');
         }
+    }
+
+    const logout = () => {
+        SessionStorage.clear();
+    }
+
+    const handleButtonPress = () => {
+        getTokenUser();
     }
 
     return (
@@ -60,18 +56,16 @@ export default function Login() {
             colors={['#87CEEB', '#FFFFFF']}
 
         >
-            <Header title={'Login'} />
             <View style={styles.content}>
                 <TextInput style={styles.input} placeholder="E-mail"
-                    onChangeText={(inputText) => { setUser(inputText) }}
+                    onChangeText={inputEmail}
                     value={email}
                 />
-                <TextInput />
                 <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}
-                    onChangeText={(inputText) => { setPassword(inputText) }}
+                    onChangeText={inputPass}
                     value={senha}
                 />
-                <StatusBar style="auto" />
+
                 <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
                     <Text>Enviar</Text>
                 </TouchableOpacity>

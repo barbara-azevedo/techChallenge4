@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Autor, Usuario } from './common.entity';
+import { Usuario } from './common.entity';
 
 const ItemUser = ({ user }: { user:any }) => {
   let u: Usuario = user;
   return (
-    <View style={styles.item}>
-      <Text style={styles.title}>{u.email}</Text>
-      <Text style={styles.conteudo}>{u.tipoAcesso}</Text>
-      <Text>
-        <Text style={styles.autorContent}>Data:  </Text><Text>{formatDate(u.dtCriacao)}</Text>
+    <View style={[styles.item,styles.marginTop]}>
+      <Text style={styles.title}><Text style={styles.title}>Nome:    </Text>{u.nome}</Text>
+      <Text style={styles.subTitle}><Text style={styles.title}>E-mail:   </Text>{u.email}</Text>
+      <Text style={styles.conteudo}><Text style={styles.title}>Acesso:  </Text>{u.tipoAcesso}</Text>
+      <Text style={styles.marginTop}>
+        <Text style={styles.autorContent}>Data:       </Text><Text>{formatDate(u.dtCriacao)}</Text>
       </Text>
     </View>
   );
@@ -41,7 +42,15 @@ const styles = StyleSheet.create({
   },
   marginTop: {
     marginTop: 15,
-  }
+  },
+  subTitle: {
+    fontSize: 14,
+  },
+  separator: {
+      marginVertical: 8,
+      borderBottomColor: '#737373',
+      borderBottomWidth: StyleSheet.hairlineWidth,
+    },
 });
 
 export default ItemUser;
