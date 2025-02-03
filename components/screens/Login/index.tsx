@@ -19,7 +19,6 @@ export default function Login() {
         await getToken({ email, senha });
         const data = SessionStorage.getItem("@usuarioLogado")
         if (data) {
-
             Alert.alert(
                 'Login',
                 `Usuário autenticado com sucesso`,
@@ -32,7 +31,6 @@ export default function Login() {
                 ],
                 { cancelable: true }
             );
-
             navigation.navigate('Home/index')
         } else {
             Alert.alert('Erro:', 'Usuário não encontrato!!!');

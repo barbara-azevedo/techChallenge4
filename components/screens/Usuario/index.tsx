@@ -1,29 +1,25 @@
 import { useEffect, useState } from "react";
 import getUsersAll from "./api";
 import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Button } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 import ItemUser from "@/components/common/item.user";
-import { LinearGradient } from "expo-linear-gradient";
+import { Usuario } from "@/components/common/common.entity";
+import SessionStorage from "react-native-session-storage";
 
 export default function Usuarios() {
+    const navigation = useNavigation<any>();
 
+    const Separator = () => <View style={styles.separator} />;
     const [data, setData] = useState<any[]>([])
     const [searchPost, setUser] = useState('')
     const [refreshing, setRefreshing] = useState(false);
-
-
-    const Separator = () => <View style={styles.separator} />;
-    const navigation = useNavigation<any>();
-
-    const linkRoute = 'screens/PostSingle/index'
 
     useEffect(() => {
         fetchData();
     }, []);
 
     const handleButtonPress = ({ item }: { item: any }) => {
-        navigation.navigate(linkRoute,
+        navigation.navigate('screens/PostSingle/index',
             { title: item.titulo, content: item.conteudo, autor: item.autor })
     }
 
@@ -35,7 +31,8 @@ export default function Usuarios() {
 
     async function fetchData() {
         try {
-            const p = await getUsersAll();
+            const usuarioLogado = SessionStorage.getItem('@usuarioLogado');
+            const p = await getUsersAll({tipoAcesso: usuarioLogado.tipoAcesso});
             const list = p.sort((a: any, b: any) => {
                 let x = (a.dtCriacao ? a.dtCriacao : new Date());
                 let y = (b.dtCriacao ? b.dtCriacao : new Date());
@@ -59,19 +56,17 @@ export default function Usuarios() {
     return (
         <SafeAreaView style={styles.container}>
             <TextInput style={styles.input}
-                placeholder="Pesquisar"
+                placeholder="Pesquisar Nome"
                 onChangeText={(inputText) => { setUser(inputText) }}
                 onChange={() => onChange()}
                 value={searchPost}
             />
             <Separator />
             <View style={styles.content}>
-
                 <TouchableOpacity style={[styles.button]}
-                    onPress={() => navigation.navigate('screens/Usuario/Adicionar/index')}>
+                    onPress={() => navigation.navigate('screens/Usuario/Editar/index')}>
                     <Text style={styles.text}>Novo Usuário</Text>
                 </TouchableOpacity>
-
             </View>
             <Separator />
             <FlatList

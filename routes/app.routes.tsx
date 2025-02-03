@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import PostSingle from '@/components/screens/PostSingle'
 import Login from '@/components/screens/Login'
 import Usuarios from '@/components/screens/Usuario'
-import AdicinarUsuario from '@/components/screens/Usuario/Adicionar'
+import AdicinarUsuario from '@/components/screens/Usuario/Editar'
 import Home from '@/components/Home'
 
 const { Navigator, Screen } = createNativeStackNavigator()
@@ -23,7 +23,7 @@ export function AppRoutes() {
                 component={PostSingle} />
             <Screen name="screens/Usuario/index" options={{ title: 'Usuários', headerShown: false }}
                 component={Usuarios} />
-            <Screen name="screens/Usuario/Adicionar/index" options={{ title: 'Usuários', headerShown: true }}
+            <Screen name="screens/Usuario/Editar/index" options={{ title: 'Usuários', headerShown: true }}
                 component={AdicinarUsuario} />
         </Navigator >
     )

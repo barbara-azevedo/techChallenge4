@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { Autor } from './common.entity';
 import { useNavigation } from '@react-navigation/native'
+import SessionStorage from 'react-native-session-storage';
 
 const Item = ({ titulo, conteudo, autor }: { titulo: any, conteudo: any, autor: any }) => {
-  const aut: Autor[] = autor;
 
   const navigation = useNavigation<any>();
+  const Separator = () => <View style={styles.separator} />;
+  const aut: Autor[] = autor;
+  const [isModify, setModify] = useState(false)
+
+  useEffect(() => {
+    const usuarioLogado = SessionStorage.getItem('@usuarioLogado');
+    console.log(usuarioLogado.tipoAcesso)
+    if (usuarioLogado && (usuarioLogado.tipoAcesso === 'ADMIN' || usuarioLogado.tipoAcesso === 'PROFESSOR')) {
+      setModify(true)
+    } else {
+      setModify(false)
+    }
+  }, []);
+
 
   const onBack = () => {
     navigation.navigate('screens/Login/index')
@@ -22,7 +36,18 @@ const Item = ({ titulo, conteudo, autor }: { titulo: any, conteudo: any, autor: 
       <Text>
         <Text style={styles.autorContent}>Data:  </Text><Text>{formatDate(aut[0].dtCriacao)}</Text>
       </Text>
-     </View>
+      {!isModify ? '' :
+        <View>
+          <Separator />
+          <View style={styles.content}>
+            <TouchableOpacity style={[styles.button]}
+              onPress={() => { }}>
+              <Text style={styles.text}>Editar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      }
+    </View>
   );
 };
 
@@ -37,9 +62,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8f8f8',
     borderTopColor: '#ddd'
   },
+  content: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   title: {
     fontSize: 14,
     fontWeight: 'bold'
+  },
+  button: {
+    backgroundColor: 'inherit',
+    borderColor: 'grey',
+    borderWidth: 1,
+    width: '50%',
+    alignItems: 'center',
+    padding: 5,
   },
   conteudo: {
     fontSize: 14,
@@ -54,7 +91,16 @@ const styles = StyleSheet.create({
   },
   marginTop: {
     marginTop: 15,
-  }
+  },
+  text: {
+    fontSize: 14,
+    fontWeight: 'bold'
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
 });
 
 export default Item;

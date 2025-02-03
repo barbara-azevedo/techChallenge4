@@ -18,7 +18,7 @@ const Header = ({ title }: { title: any }) => {
   ];
 
   useEffect(() => {
-    console.log('Header aqui')
+      setValue(null)
   }, []);
 
   const [value, setValue] = useState(null);
@@ -34,6 +34,7 @@ const Header = ({ title }: { title: any }) => {
         navigation.navigate('screens/PostList/index')
       } else if (item.value === '3') {
         SessionStorage.clear();
+        setValue(null)
         navigation.navigate('screens/Login/index')
       } else {
         navigation.navigate('Home/index')
