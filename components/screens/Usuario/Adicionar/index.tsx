@@ -1,10 +1,10 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Text, View, TextInput, Button, Alert, StyleSheet, TouchableOpacity, SectionList } from "react-native";
 import { useState } from "react";
 import { useNavigation } from '@react-navigation/native'
-import Header from "@/components/Header/header";
+import SessionStorage from 'react-native-session-storage';
 import { LinearGradient } from "expo-linear-gradient";
 import { postUserCreate } from '../api';
 
@@ -12,18 +12,45 @@ import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function AdicinarUsuario() {
+  const navigation = useNavigation<any>();
+
   const [nome, setNome] = useState('')
   const [senha, setSenha] = useState('')
   const [email, setEmail] = useState('')
   const [tipoAcesso, setTipoAcesso] = useState('')
-  const [_, setText] = useState('')
-  const navigation = useNavigation<any>();
+
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
+
+  const [fetch, setFetch] = useState([
+    { label: 'Aluno', value: 'ALUNO' },
+    { label: 'Professor', value: 'PROFESSOR' },
+  ])
+
+  const Separator = () => <View style={styles.separator} />;
+
+  useEffect(() => {
+    const usuarioLogado = SessionStorage.getItem('@usuarioLogado');
+    if (usuarioLogado && usuarioLogado.tipoAcesso === 'ALUNO') {
+      setFetch([
+        { label: 'Aluno', value: 'ALUNO' }
+      ])
+    } else if (usuarioLogado && usuarioLogado.tipoAcesso === 'PROFESSOR') {
+      setFetch([
+        { label: 'Professor', value: 'PROFESSOR' }
+      ])
+    } else {
+      setFetch([
+        { label: 'Aluno', value: 'ALUNO' },
+        { label: 'Professor', value: 'PROFESSOR' },
+      ])
+    }
+  }, []);
 
   async function save() {
 
     const response = await postUserCreate({ email, senha, nome, tipoAcesso });
     if (response === 201) {
-
       Alert.alert(
         'Adicionar Usuário',
         `Usuário salvo com sucesso`,
@@ -49,37 +76,16 @@ export default function AdicinarUsuario() {
     save();
   }
 
-  const data = [
-    { label: 'Aluno', value: 'ALUNO' },
-    { label: 'Professor', value: 'PROFESSOR' },
-  ];
-
-  const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
-
-  const DropdownComponent = () => {
-    const [value, setValue] = useState(null);
-    const [isFocus, setIsFocus] = useState(false);
-
-    const renderLabel = () => {
-      if (value || isFocus) {
-        return (
-          <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-            Dropdown label
-          </Text>
-        );
-      }
-      return null;
-    };
-  }
-
   return (
     <LinearGradient
       style={styles.container}
       colors={['#87CEEB', '#FFFFFF']}
-
     >
       <View style={styles.content}>
+        
+        <Text style={styles.text}>{'Adicionar Novo Usuário'}</Text>
+
+        <Separator />
         <TextInput style={styles.input} placeholder="Nome"
           onChangeText={setNome}
           value={nome}
@@ -96,7 +102,7 @@ export default function AdicinarUsuario() {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={data}
+          data={fetch}
           search
           maxHeight={300}
           labelField="label"
@@ -196,5 +202,14 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+  },  
+  text: {
+    fontSize: 14,
+    fontWeight: 'bold'
+},
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 })

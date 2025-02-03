@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import getUsersAll from "./api";
-import { FlatList, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Button } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 import ItemUser from "@/components/common/item.user";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Usuarios() {
 
@@ -63,6 +64,16 @@ export default function Usuarios() {
                 onChange={() => onChange()}
                 value={searchPost}
             />
+            <Separator />
+            <View style={styles.content}>
+
+                <TouchableOpacity style={[styles.button]}
+                    onPress={() => navigation.navigate('screens/Usuario/Adicionar/index')}>
+                    <Text style={styles.text}>Novo Usuário</Text>
+                </TouchableOpacity>
+
+            </View>
+            <Separator />
             <FlatList
                 data={data}
                 renderItem={({ item }) => {
@@ -82,11 +93,6 @@ export default function Usuarios() {
                 onEndReached={loadMoreData}
                 onEndReachedThreshold={0.5}
             />
-            <Separator />
-            <Button
-                title="Voltar"
-                onPress={() => { }}
-            />
         </SafeAreaView>
     );
 }
@@ -96,14 +102,31 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 20,
     },
+    content: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     input: {
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 10,
         paddingHorizontal: 10,
+        backgroundColor: 'inherit',
         width: '100%',
         borderRadius: 25,
+    },
+    button: {
+        backgroundColor: 'inherit',
+        borderColor: 'grey',
+        borderWidth: 1,
+        width: '50%',
+        alignItems: 'center',
+        padding: 5,
+    },
+    text: {
+        fontSize: 14,
+        fontWeight: 'bold'
     },
     separator: {
         marginVertical: 8,

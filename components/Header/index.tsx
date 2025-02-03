@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import { Dropdown } from 'react-native-element-dropdown';
@@ -8,38 +8,39 @@ import SessionStorage from 'react-native-session-storage';
 const Header = ({ title }: { title: any }) => {
 
   const navigation = useNavigation<any>();
+  const [isLogado, setLogado] = useState(false)
 
   const data = [
+    { label: 'Home', value: '0' },
     { label: 'Usuários', value: '1' },
-    { label: 'Add usuário', value: '2' },
-    { label: 'Posts', value: '3' },
-    { label: 'Logout', value: '4' },
+    { label: 'Posts', value: '2' },
+    { label: 'Logout', value: '3' },
   ];
+
+  useEffect(() => {
+    console.log('Header aqui')
+  }, []);
 
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
   const onNavigate = ({ item }: { item: any }) => {
-    const data = SessionStorage.getItem('@usuarioLogado');
-   
-    if (data && data.tipoAcesso === 'PROFESSOR') {
+    let data = SessionStorage.getItem('@usuarioLogado');
+
+    if (data && data.tipoAcesso) {
       if (item.value === '1') {
         navigation.navigate('screens/Usuario/index')
-      } else if (item.value === '2') {
-        navigation.navigate('screens/Usuario/Adicionar/index')
-      } else if (item.value === '3') {
+      }  else if (item.value === '2') {
         navigation.navigate('screens/PostList/index')
-      } else if (item.value === '4') {
+      } else if (item.value === '3') {
         SessionStorage.clear();
         navigation.navigate('screens/Login/index')
+      } else {
+        navigation.navigate('Home/index')
       }
     } else {
-      data = [
-        { label: 'Usuários', value: '1' },
-        { label: 'Add usuário', value: '2' },
-        { label: 'Posts', value: '3' },
-        { label: 'Logout', value: '4' },
-      ];
+      SessionStorage.clear();
+      setValue(null)
       navigation.navigate('screens/Login/index')
     }
   }
@@ -48,7 +49,6 @@ const Header = ({ title }: { title: any }) => {
     <View style={styles.header}>
       <Text style={styles.title}>{title}
       </Text>
-
       <Dropdown
         style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
         placeholderStyle={styles.placeholderStyle}

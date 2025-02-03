@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { Routes } from "@/routes";
 import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Footer from "@/components/Footer/footer";
-import Header from "@/components/Header/header";
+import Header from "@/components/Header/index";
 import { useNavigation } from '@react-navigation/native'
 import SessionStorage from "react-native-session-storage";
 import { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ export default function RootLayout() {
 
   return (
     <View style={styles.container} >
-      <Header title={'Home'} />
+      <Header title={'EducaOnline'} />
       <Routes></Routes>
       <Footer></Footer>
     </View>

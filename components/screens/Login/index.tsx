@@ -1,16 +1,13 @@
 import { Text, View, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
-import Header from "@/components/Header/header";
-import getToken, { findOneUser } from "./api";
+import getToken from "./api";
 import SessionStorage from 'react-native-session-storage';
 
 export default function Login() {
     const [email, inputEmail] = useState('')
     const [senha, inputPass] = useState('')
-    const [_, setText] = useState('')
     const navigation = useNavigation<any>();
 
     async function getTokenUser() {
@@ -36,7 +33,7 @@ export default function Login() {
                 { cancelable: true }
             );
 
-            navigation.navigate('screens/Login/index')
+            navigation.navigate('Home/index')
         } else {
             Alert.alert('Erro:', 'Usuário não encontrato!!!');
         }
@@ -54,7 +51,6 @@ export default function Login() {
         <LinearGradient
             style={styles.container}
             colors={['#87CEEB', '#FFFFFF']}
-
         >
             <View style={styles.content}>
                 <TextInput style={styles.input} placeholder="E-mail"
@@ -67,15 +63,11 @@ export default function Login() {
                 />
 
                 <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-                    <Text>Enviar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={logout}>
-                    <Text>Logout</Text>
+                    <Text>Logar</Text>
                 </TouchableOpacity>
             </View>
         </LinearGradient>
     );
-
 }
 
 const styles = StyleSheet.create({

@@ -6,7 +6,7 @@ import PostSingle from '@/components/screens/PostSingle'
 import Login from '@/components/screens/Login'
 import Usuarios from '@/components/screens/Usuario'
 import AdicinarUsuario from '@/components/screens/Usuario/Adicionar'
-
+import Home from '@/components/Home'
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
@@ -15,13 +15,15 @@ export function AppRoutes() {
         <Navigator screenOptions={{}}>
             <Screen name="screens/Login/index" options={{ title: 'Login', headerShown: false }}
                 component={Login} />
+            <Screen name="Home/index" options={{ title: 'Home', headerShown: false }}
+                component={Home} />
             <Screen name="screens/PostList/index" options={{ title: 'Lista de Posts', headerShown: false }}
                 component={ListScreen} />
             <Screen name="screens/PostSingle/index" options={{ title: 'Post', headerShown: true }}
                 component={PostSingle} />
-            <Screen name="screens/Usuario/index" options={{ title: 'Usuários', headerShown: true }}
+            <Screen name="screens/Usuario/index" options={{ title: 'Usuários', headerShown: false }}
                 component={Usuarios} />
-            <Screen name="screens/Usuario/Adicionar/index" options={{ title: 'Novo Usuário', headerShown: true }}
+            <Screen name="screens/Usuario/Adicionar/index" options={{ title: 'Usuários', headerShown: true }}
                 component={AdicinarUsuario} />
         </Navigator >
     )
