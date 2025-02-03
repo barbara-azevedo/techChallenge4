@@ -15,7 +15,7 @@ const ListScreen = () => {
 
     const handleButtonPress = ({ item }: { item: any }) => {
         navigation.navigate(linkRoute,
-            { title: item.titulo, content: item.conteudo, autor: item.autor })
+            { _id: item._id,title: item.titulo, content: item.conteudo, autor: item.autor })
     }
 
     useEffect(() => {
@@ -90,11 +90,6 @@ const ListScreen = () => {
                 refreshing={refreshing}
                 onEndReached={loadMoreData}
                 onEndReachedThreshold={0.5}
-            />
-            <Separator />
-            <Button
-                title="Voltar"
-                onPress={() => onBack()}
             />
         </SafeAreaView>
     );

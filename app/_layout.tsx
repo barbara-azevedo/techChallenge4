@@ -30,27 +30,6 @@ export default function RootLayout() {
   return (
     <View style={styles.container} >
       <Header title={'Home'} />
-      <Button
-        title="Add User"
-        onPress={() => { navigation.navigate('screens/Usuario/Adicionar/index') }}
-      />
-
-      <Button
-        title="Post-List"
-        onPress={() => { navigation.navigate('screens/PostList/index') }}
-      />
-
-      <Button
-        title="Usuários"
-        onPress={() => { navigation.navigate('screens/Usuario/index') }}
-      />
-
-
-      <Button
-        title="Login"
-        onPress={() => navigation.navigate('screens/Login/index')}
-      />
-
       <Routes></Routes>
       <Footer></Footer>
     </View>

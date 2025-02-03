@@ -7,16 +7,12 @@ import ItemSingle from '@/components/common/item.sigle';
 export default function PostSingle({ route }: { route: any }) {
 
   const navigation = useNavigation<any>();
-
+  const { _id } = route.params
   const { title } = route.params
   const { content } = route.params
   const { autor } = route.params
 
   const Separator = () => <View style={styles.separator} />;
-
-  const onBack = () => {
-    navigation.navigate('screens/PostList/index')
-  }
 
   return (
     <SafeAreaProvider>
