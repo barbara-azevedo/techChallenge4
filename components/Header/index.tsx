@@ -44,6 +44,29 @@ const Header = ({ title }: { title: any }) => {
     setMenuVisible(false);
   };
 
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+
+  const checkLoginStatus = async () => {
+    const data = await SessionStorage.getItem('@usuarioLogado');
+    setIsLoggedIn(!!data);
+  };
+
+  
+  useEffect(() => {
+    checkLoginStatus(); 
+    const intervalId = setInterval(checkLoginStatus, 500);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  if (isLoggedIn === null) {
+    return null; 
+  }
+
+  if (!isLoggedIn) {
+    return null;
+  }
+
   return (
     <View style={styles.header}>
       <Text style={styles.title}>{title}</Text>
@@ -59,14 +82,15 @@ const Header = ({ title }: { title: any }) => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.menu}>
+          <TouchableOpacity onPress={() => setMenuVisible(false)} style={styles.closeButton}>
+            <Text style={styles.textMenuText}>EducaOnline</Text>
+            <Ionicons name="menu" size={30} color="black" />
+            </TouchableOpacity>
             {data.map((item) => (
               <TouchableOpacity key={item.value} style={styles.menuItem} onPress={() => onNavigate(item)}>
-                <Text style={styles.menuText}>{item.label}</Text>
+                <Text style={styles.menuItemText}>{item.label}</Text>
               </TouchableOpacity>
             ))}
-            <TouchableOpacity onPress={() => setMenuVisible(false)} style={styles.closeButton}>
-              <Text style={styles.closeText}>Fechar</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -92,31 +116,31 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   menu: {
-    width: '80%',
+    width: '100%',
     backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
+    padding: 15,
   },
   menuItem: {
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
-  menuText: {
+  menuItemText: {
     fontSize: 18,
   },
   closeButton: {
-    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  closeText: {
-    fontSize: 16,
-    color: 'blue',
-  },
+  textMenuText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  }
 });
 
 export default Header;
