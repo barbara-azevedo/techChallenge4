@@ -104,10 +104,11 @@ const styles = StyleSheet.create({
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
-        marginBottom: 10,
+        marginBottom: 15,
         paddingHorizontal: 10,
-        width: '100%',
+        width: '80%',
         borderRadius: 25,
+        marginStart: '10%',
     },
     separator: {
         marginVertical: 8,

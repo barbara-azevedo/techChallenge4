@@ -108,8 +108,9 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingHorizontal: 10,
         backgroundColor: 'inherit',
-        width: '100%',
+        width: '80%',
         borderRadius: 25,
+        marginStart: '10%',
     },
     button: {
         backgroundColor: 'inherit',
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
         width: '50%',
         alignItems: 'center',
         padding: 5,
+        borderRadius: 25,
     },
     text: {
         fontSize: 14,

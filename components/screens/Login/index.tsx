@@ -1,4 +1,4 @@
-import { Text, View, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, Text, View, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
@@ -33,7 +33,7 @@ export default function Login() {
             );
             navigation.navigate('Home/index')
         } else {
-            Alert.alert('Erro:', 'Usuário não encontrato!!!');
+            Alert.alert('Erro:', 'Usuário não encontrado!!!');
         }
     }
 
@@ -51,6 +51,7 @@ export default function Login() {
             colors={['#87CEEB', '#FFFFFF']}
         >
             <View style={styles.content}>
+                <Image source={require("@/assets/images/educaonline-logo.png")} style={styles.image} />
                 <TextInput style={styles.input} placeholder="E-mail"
                     onChangeText={inputEmail}
                     value={email}
@@ -70,21 +71,21 @@ export default function Login() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 0.6,
+        flex: 1,
         backgroundColor: '#fff',
     },
     content: {
-        flex: 1,
+        flex: 0.6,
         alignItems: 'center',
         justifyContent: 'center',
     },
     input: {
-        height: 40,
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 10,
         paddingHorizontal: 10,
-        width: '100%',
+        width: '80%',
+        padding: 5,
         borderRadius: 25,
     },
     button: {
@@ -94,5 +95,11 @@ const styles = StyleSheet.create({
         width: '50%',
         alignItems: 'center',
         padding: 5,
-    }
+        borderRadius: 25,
+    },
+    image: {
+        width: 200,
+        height: 200,
+        margin: 'auto'
+    } 
 })

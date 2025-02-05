@@ -57,10 +57,14 @@ export function formatDate(date: any) {
 
 const styles = StyleSheet.create({
   item: {
+    margin: 10,
     flex: 1,
     padding: 20,
     backgroundColor: '#f8f8f8',
-    borderTopColor: '#ddd'
+    borderTopColor: '#ddd',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#ddd',
   },
   content: {
     alignItems: 'center',
@@ -74,6 +78,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'inherit',
     borderColor: 'grey',
     borderWidth: 1,
+    borderRadius: 25,
     width: '50%',
     alignItems: 'center',
     padding: 5,

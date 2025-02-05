@@ -1,13 +1,10 @@
-
 import React, { useEffect } from 'react';
-
 import { Text, View, TextInput, Button, Alert, StyleSheet, TouchableOpacity, SectionList } from "react-native";
 import { useState } from "react";
 import { useNavigation } from '@react-navigation/native'
 import SessionStorage from 'react-native-session-storage';
 import { LinearGradient } from "expo-linear-gradient";
 import { postUserCreate, postUserUpdate } from '../api';
-
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
@@ -199,11 +196,11 @@ export default function AdicinarUsuario({ route }: { route: any }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.6,
+    flex: 1,
     backgroundColor: '#fff',
   },
   content: {
-    flex: 1,
+    flex: 0.6,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -213,7 +210,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
-    width: '100%',
+    width: '90%',
     borderRadius: 25,
   },
   button: {
@@ -229,8 +226,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#6B7280'
   },
   buttonSpace: {
     marginRight: 5,
@@ -243,7 +238,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
-    width: '100%',
+    width: '90%',
     borderRadius: 25,
   },
   icon: {

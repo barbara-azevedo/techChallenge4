@@ -37,9 +37,11 @@ export function formatDate(date: any) {
 
 const styles = StyleSheet.create({
   item: {
+    margin: 10,
     padding: 5,
     backgroundColor: '#f8f8f8',
-    borderTopColor: '#ddd'
+    borderTopColor: '#ddd',
+    borderRadius: 10,
   },
   content: {
     alignItems: 'center',
@@ -72,6 +74,7 @@ const styles = StyleSheet.create({
     width: '50%',
     alignItems: 'center',
     padding: 5,
+    borderRadius: 25,
   },
   text: {
     fontSize: 14,

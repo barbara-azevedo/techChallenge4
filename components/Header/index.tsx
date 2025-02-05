@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
-import { Dropdown } from 'react-native-element-dropdown';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { Ionicons } from '@expo/vector-icons';
 import SessionStorage from 'react-native-session-storage';
 
 const Header = ({ title }: { title: any }) => {
 
   const navigation = useNavigation<any>();
-  const [isLogado, setLogado] = useState(false)
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const data = [
     { label: 'Home', value: '0' },
@@ -24,61 +23,53 @@ const Header = ({ title }: { title: any }) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
-  const onNavigate = ({ item }: { item: any }) => {
+  const onNavigate = (item: any) => {
     let data = SessionStorage.getItem('@usuarioLogado');
 
     if (data && data.tipoAcesso) {
       if (item.value === '1') {
-        navigation.navigate('screens/Usuario/index')
-      }  else if (item.value === '2') {
-        navigation.navigate('screens/PostList/index')
+        navigation.navigate('screens/Usuario/index');
+      } else if (item.value === '2') {
+        navigation.navigate('screens/PostList/index');
       } else if (item.value === '3') {
         SessionStorage.clear();
-        setValue(null)
-        navigation.navigate('screens/Login/index')
+        navigation.navigate('screens/Login/index');
       } else {
-        navigation.navigate('Home/index')
+        navigation.navigate('Home/index');
       }
     } else {
       SessionStorage.clear();
-      setValue(null)
-      navigation.navigate('screens/Login/index')
+      navigation.navigate('screens/Login/index');
     }
-  }
+    setMenuVisible(false);
+  };
 
   return (
     <View style={styles.header}>
-      <Text style={styles.title}>{title}
-      </Text>
-      <Dropdown
-        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        inputSearchStyle={styles.inputSearchStyle}
-        iconStyle={styles.iconStyle}
-        data={data}
-        maxHeight={300}
-        labelField="label"
-        valueField="value"
-        placeholder={!isFocus ? 'Menu' : '...'}
-        value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        onChange={item => {
-          setValue(item.value);
-          setIsFocus(false);
-          onNavigate({ item })
-        }}
+      <Text style={styles.title}>{title}</Text>
+      <TouchableOpacity onPress={() => setMenuVisible(true)}>
+        <Ionicons name="menu" size={30} color="black" />
+      </TouchableOpacity>
 
-        renderLeftIcon={() => (
-          <AntDesign
-            style={styles.icon}
-            color={isFocus ? 'blue' : 'black'}
-            name="Safety"
-            size={20}
-          />
-        )}
-      />
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={menuVisible}
+        onRequestClose={() => setMenuVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.menu}>
+            {data.map((item) => (
+              <TouchableOpacity key={item.value} style={styles.menuItem} onPress={() => onNavigate(item)}>
+                <Text style={styles.menuText}>{item.label}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity onPress={() => setMenuVisible(false)} style={styles.closeButton}>
+              <Text style={styles.closeText}>Fechar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
     </View>
   );
@@ -86,51 +77,45 @@ const Header = ({ title }: { title: any }) => {
 
 const styles = StyleSheet.create({
   header: {
-    height: 60,
-    backgroundColor: '#f8f8f8',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: '#f8f8f8',
+    padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd'
+    borderBottomColor: '#ddd',
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
-  dropdown: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    width: '100%',
-    borderRadius: 25,
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  icon: {
-    marginRight: 5,
-  },
-  label: {
-    position: 'absolute',
+  menu: {
+    width: '80%',
     backgroundColor: 'white',
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
+    padding: 20,
+    borderRadius: 10,
   },
-  placeholderStyle: {
+  menuItem: {
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  menuText: {
+    fontSize: 18,
+  },
+  closeButton: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  closeText: {
     fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
+    color: 'blue',
   },
 });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { Image, View, Text, StyleSheet, Button } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -12,7 +12,7 @@ export default function Home() {
         >
             <View style={styles.body}>
                 <Text style={styles.title}>{'Bem vindo !'}</Text>
-                <View style={styles.separator}></View>
+                <Image source={require("@/assets/images/educaonline-logo.png")} style={styles.image} />
                 <Text style={styles.title}>{'EducaOnline'}</Text>
                 <View style={styles.separator}></View>
                 <Text style={styles.subTitle}>{'Informações para seus estudos'}</Text>
@@ -44,4 +44,8 @@ const styles = StyleSheet.create({
         borderBottomColor: '#737373',
         borderBottomWidth: StyleSheet.hairlineWidth,
     },
+    image: {
+        width: 150,
+        height: 150,
+    } 
 });
