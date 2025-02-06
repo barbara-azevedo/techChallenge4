@@ -14,8 +14,10 @@ export default async function getUsersAll({ tipoAcesso }: { tipoAcesso: any }) {
             headers: headers
         });
         results = response.data
-    } catch (error) {
+    } catch (error: any) {
         console.log('getUsersAll erro:  ' + error)
+        let retorno: any = JSON.parse(JSON.stringify(error))
+        results = retorno.status;
     }
     return results;
 }
@@ -36,6 +38,8 @@ export async function postUserCreate({ email, senha, nome, tipoAcesso }: { email
         results = response.status
     } catch (error) {
         console.log('postUserCreate erro:  ' + error)
+        let retorno: any = JSON.parse(JSON.stringify(error))
+        results = retorno.status;
     }
     return results;
 }
@@ -56,6 +60,8 @@ export async function postUserUpdate({ email, senha, nome, tipoAcesso }: { email
         results = response.status
     } catch (error) {
         console.log('postUserUpdate erro:  ' + error)
+        let retorno: any = JSON.parse(JSON.stringify(error))
+        results = retorno.status;
     }
     return results;
 }

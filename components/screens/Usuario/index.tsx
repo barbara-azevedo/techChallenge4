@@ -18,11 +18,6 @@ export default function Usuarios() {
         fetchData();
     }, []);
 
-    const handleButtonPress = ({ item }: { item: any }) => {
-        navigation.navigate('screens/PostSingle/index',
-            { title: item.titulo, content: item.conteudo, autor: item.autor })
-    }
-
     const handleRefresh = () => {
         setRefreshing(true);
         fetchData();
@@ -32,15 +27,20 @@ export default function Usuarios() {
     async function fetchData() {
         try {
             const usuarioLogado = SessionStorage.getItem('@usuarioLogado');
-            const p = await getUsersAll({tipoAcesso: usuarioLogado.tipoAcesso});
-            const list = p.sort((a: any, b: any) => {
-                let x = (a.dtCriacao ? a.dtCriacao : new Date());
-                let y = (b.dtCriacao ? b.dtCriacao : new Date());
-                return x >= y
-                    ? -1
-                    : 1
-            });
-            setData(list)
+            const p = await getUsersAll({ tipoAcesso: usuarioLogado.tipoAcesso });
+            if (!p || p === 401) {
+                SessionStorage.clear();
+                navigation.navigate('screens/Login/index')
+            } else if (usuarioLogado) {
+                const list = p.sort((a: any, b: any) => {
+                    let x = (a.dtCriacao ? a.dtCriacao : new Date());
+                    let y = (b.dtCriacao ? b.dtCriacao : new Date());
+                    return x >= y
+                        ? -1
+                        : 1
+                });
+                setData(list)
+            }
         } catch (error) {
             console.log('Error fetching weather data: ', error)
         }

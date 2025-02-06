@@ -72,7 +72,10 @@ export default function AdicinarUsuario({ route }: { route: any }) {
     if (response === 201) {
       alerta({ titulo: 'Salvar', msg: 'Usuário salvo com sucesso', nav: 'screens/Usuario/index' })
       limpar()
-    } else {
+    } else if (response === 401) {
+      SessionStorage.clear()
+      navigation.navigate('screens/Login/index')
+    }else {
       Alert.alert('Error: ' + response)
     }
   }
@@ -82,7 +85,10 @@ export default function AdicinarUsuario({ route }: { route: any }) {
     if (response === 200) {
       alerta({ titulo: 'Atualizar', msg: 'Usuário atualizado com sucesso', nav: 'screens/Usuario/index' })
       limpar()
-    } else {
+    } else if (response === 401) {
+      SessionStorage.clear()
+      navigation.navigate('screens/Login/index')
+    }  else {
       Alert.alert('Error: ' + response)
     }
   }

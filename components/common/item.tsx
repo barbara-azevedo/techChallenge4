@@ -13,7 +13,7 @@ const Item = ({ titulo, conteudo, autor }: { titulo: any, conteudo: any, autor: 
 
   useEffect(() => {
     const usuarioLogado = SessionStorage.getItem('@usuarioLogado');
-    console.log(usuarioLogado.tipoAcesso)
+
     if (usuarioLogado && (usuarioLogado.tipoAcesso === 'ADMIN' || usuarioLogado.tipoAcesso === 'PROFESSOR')) {
       setModify(true)
     } else {

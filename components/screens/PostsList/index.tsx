@@ -8,14 +8,14 @@ const ListScreen = () => {
     const [data, setData] = useState<any[]>([])
     const [searchPost, setUser] = useState('')
     const [refreshing, setRefreshing] = useState(false);
-    
+
     const Separator = () => <View style={styles.separator} />;
     const navigation = useNavigation<any>();
     const linkRoute = 'screens/PostSingle/index'
 
     const handleButtonPress = ({ item }: { item: any }) => {
         navigation.navigate(linkRoute,
-            { _id: item._id,title: item.titulo, content: item.conteudo, autor: item.autor })
+            { _id: item._id, title: item.titulo, content: item.conteudo, autor: item.autor })
     }
 
     useEffect(() => {
@@ -25,14 +25,16 @@ const ListScreen = () => {
     async function fetchData() {
         try {
             const p = await getFastList();
-            const list = p.sort((a: any, b: any) => {
-                let x = (a.dtCriacao ? a.dtCriacao : new Date());
-                let y = (b.dtCriacao ? b.dtCriacao : new Date());
-                return x >= y
-                    ? -1
-                    : 1
-            });
-            setData(list)
+            if (p) {
+                const list = p.sort((a: any, b: any) => {
+                    let x = (a.dtCriacao ? a.dtCriacao : new Date());
+                    let y = (b.dtCriacao ? b.dtCriacao : new Date());
+                    return x >= y
+                        ? -1
+                        : 1
+                });
+                setData(list)
+            }
         } catch (error) {
             console.log('Error fetching weather data: ', error)
         }
@@ -62,7 +64,7 @@ const ListScreen = () => {
     }
     const onBack = () => {
         navigation.navigate('screens/Login/index')
-      }
+    }
     return (
         <SafeAreaView style={styles.container}>
             <TextInput style={styles.input}
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         borderBottomColor: '#737373',
         borderBottomWidth: StyleSheet.hairlineWidth,
-      },
+    },
 });
 
 export default ListScreen;
