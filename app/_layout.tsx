@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native'
 import SessionStorage from "react-native-session-storage";
 import { useEffect, useState } from "react";
 import { Usuario } from "@/components/common/common.entity";
-
+import { Platform } from 'react-native';
 
 export default function RootLayout() {
 
@@ -25,7 +25,19 @@ export default function RootLayout() {
     setUsuario(data)
   }
 
-  console.log(usuarioLogado)
+  if (Platform.OS === 'ios') {
+    // do something for ios
+    console.log("IOS")
+  } else if (Platform.OS === 'android') {
+    // other thing for android
+    console.log("android")
+  } else if (Platform.OS === 'web') {
+    // it's on web!
+    console.log("web")
+  } else {
+    // you probably won't end up here unless you support another platform!
+    console.log("sei la")
+  }
 
   return (
     <View style={styles.container} >
@@ -40,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
-    borderBottomColor: '#ddd'
+    borderBottomColor: '#ddd',
   },
   header: {
     height: 60,

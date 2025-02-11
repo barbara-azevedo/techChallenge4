@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, View, TextInput, Button, Alert, StyleSheet, TouchableOpacity, SectionList } from "react-native";
+import { Text, View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { useNavigation } from '@react-navigation/native'
 import SessionStorage from 'react-native-session-storage';
@@ -7,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { postUserCreate, postUserUpdate } from '../api';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Toast from 'react-native-toast-message';
 
 export default function AdicinarUsuario({ route }: { route: any }) {
   const navigation = useNavigation<any>();
@@ -43,6 +44,8 @@ export default function AdicinarUsuario({ route }: { route: any }) {
       } else {
         setEditable(true)
       }
+    } else {
+      setEditable(true)
     }
 
 
@@ -67,38 +70,33 @@ export default function AdicinarUsuario({ route }: { route: any }) {
   async function save() {
     const response = await postUserCreate({ email, senha, nome, tipoAcesso });
     if (response === 201) {
-      alerta({ titulo: 'Salvar', msg: 'Usuário salvo com sucesso', nav: 'screens/Usuario/index' })
+      toasMsg('success', 'Usuário salvo com sucesso', 'screens/Usuario/index')
       limpar()
     } else if (response === 401) {
       SessionStorage.clear()
-      navigation.navigate('screens/Login/index')
-    }else {
-      Alert.alert('Error: ' + response)
+      toasMsg('error', 'Usuário não está autenticado', 'screens/Login/index')
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Ocorreu um erro...',
+      });
     }
   }
 
   async function update() {
     const response = await postUserUpdate({ email, senha, nome, tipoAcesso });
     if (response === 200) {
-      alerta({ titulo: 'Atualizar', msg: 'Usuário atualizado com sucesso', nav: 'screens/Usuario/index' })
+      toasMsg('success', 'Usuário atualizado com sucesso', 'screens/Usuario/index')
       limpar()
     } else if (response === 401) {
       SessionStorage.clear()
-      navigation.navigate('screens/Login/index')
-    }  else {
-      Alert.alert('Error: ' + response)
+      toasMsg('error', 'Usuário não está autenticado', 'screens/Login/index')
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Ocorreu um erro...',
+      });
     }
-  }
-
-  const alerta = ({ titulo, msg, nav }: { titulo: any, msg: any, nav: any }) => {
-    Alert.alert(titulo, msg,
-      [{
-        text: 'OK',
-        onPress: () => navigation.navigate(nav),
-        style: 'cancel',
-      },],
-      { cancelable: true }
-    );
   }
 
   const handleButtonPress = () => {
@@ -109,12 +107,26 @@ export default function AdicinarUsuario({ route }: { route: any }) {
     update();
   }
 
+  const toasMsg = (type: any, mensagem: any, nav: any) => {
+    Toast.show({
+      type: type,
+      text1: mensagem,
+      onHide() {
+        navigation.navigate(nav)
+      },
+      onPress() {
+        navigation.navigate(nav)
+      },
+    });
+  }
+
   const limpar = () => {
     setId('')
     setNome('')
     setEmail('')
     setSenha('')
     setTipoAcesso('')
+    setEditable(true)
   }
 
   return (
@@ -183,18 +195,19 @@ export default function AdicinarUsuario({ route }: { route: any }) {
         <View style={styles.btnGroup}>
           {!_id ?
             <TouchableOpacity style={[styles.button, styles.buttonSpace]} onPress={handleButtonPress}>
-              <Text>Salvar</Text>
+              <Text style={[styles.colorGreen, styles.text]}>Salvar</Text>
             </TouchableOpacity>
             :
             <TouchableOpacity style={[styles.button, styles.buttonSpace]} onPress={handleUpdateButtonPress}>
-              <Text>Atualizar</Text>
+              <Text style={[styles.colorGreen, styles.text]}>Atualizar</Text>
             </TouchableOpacity>
           }
           <TouchableOpacity style={[styles.button, styles.buttonSpace]} onPress={limpar}>
-            <Text>Limpar</Text>
+            <Text style={[styles.text]}>Limpar</Text>
           </TouchableOpacity>
         </View>
       </View>
+      <Toast />
     </LinearGradient >
   );
 
@@ -276,6 +289,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     fontWeight: 'bold'
+  },
+  colorGreen: {
+    color: 'green'
+  },
+  colorRed: {
+    color: 'red'
   },
   separator: {
     marginVertical: 8,

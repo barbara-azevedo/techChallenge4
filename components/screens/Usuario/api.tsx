@@ -1,5 +1,5 @@
 
-import api from '@/src/api';
+import api from '@/app/api';
 import SessionStorage from 'react-native-session-storage';
 
 export default async function getUsersAll({ tipoAcesso }: { tipoAcesso: any }) {
@@ -54,7 +54,7 @@ export async function postUserUpdate({ email, senha, nome, tipoAcesso }: { email
         }
         const body = { email, senha, tipoAcesso, nome }
 
-        const response = await api.post(`/user/update`, body, {
+        const response = await api.put(`/user/update`, body, {
             headers: headers
         });
         results = response.status

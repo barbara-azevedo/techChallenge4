@@ -4,7 +4,7 @@ import { Autor } from './common.entity';
 import { useNavigation } from '@react-navigation/native'
 import SessionStorage from 'react-native-session-storage';
 
-const Item = ({ titulo, conteudo, autor }: { titulo: any, conteudo: any, autor: any }) => {
+const Item = ({_id, titulo, conteudo, autor }: {_id: any, titulo: any, conteudo: any, autor: any }) => {
 
   const navigation = useNavigation<any>();
   const Separator = () => <View style={styles.separator} />;
@@ -22,14 +22,18 @@ const Item = ({ titulo, conteudo, autor }: { titulo: any, conteudo: any, autor: 
   }, []);
 
 
-  const onBack = () => {
-    navigation.navigate('screens/Login/index')
+  const onPressEdit = () => {
+    navigation.navigate('screens/PostList/Editar/index')
   }
 
   return (
     <View style={styles.item}>
       <Text style={styles.title}>{titulo}</Text>
-      <Text style={styles.conteudo}>{conteudo?.substring(0, 100)}...leia mais</Text>
+      {conteudo.length > 50 ?
+       <Text style={styles.conteudo}>{conteudo?.substring(0, 100)}...leia mais</Text>
+       :
+       <Text style={styles.conteudo}>{conteudo}</Text>
+      }
       <Text style={styles.marginTop}>
         <Text style={styles.autorContent}>Autor:  </Text><Text>{aut[0].nome}</Text>
       </Text>
@@ -41,7 +45,7 @@ const Item = ({ titulo, conteudo, autor }: { titulo: any, conteudo: any, autor: 
           <Separator />
           <View style={styles.content}>
             <TouchableOpacity style={[styles.button]}
-              onPress={() => { }}>
+              onPress={() => navigation.navigate('screens/PostList/Editar/index', {_id: _id, titulo: titulo, conteudo: conteudo, idAutor: aut[0]._id, nomeAutor: aut[0].nome })}>
               <Text style={styles.text}>Editar</Text>
             </TouchableOpacity>
           </View>

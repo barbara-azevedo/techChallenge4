@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, StyleSheet, SafeAreaView, TouchableOpacity, View, Alert, TextInput, Button } from 'react-native';
+import { FlatList, StyleSheet, SafeAreaView, TouchableOpacity, View, TextInput, Text } from 'react-native';
 import Item from '../../common/item';
 import getFastList, { getFastListSearch } from './api';
 import { useNavigation } from '@react-navigation/native'
+import SessionStorage from 'react-native-session-storage';
 
 const ListScreen = () => {
     const [data, setData] = useState<any[]>([])
     const [searchPost, setUser] = useState('')
     const [refreshing, setRefreshing] = useState(false);
+    const [isModify, setModify] = useState(false)
 
     const Separator = () => <View style={styles.separator} />;
     const navigation = useNavigation<any>();
@@ -20,6 +22,13 @@ const ListScreen = () => {
 
     useEffect(() => {
         fetchData();
+        const usuarioLogado = SessionStorage.getItem('@usuarioLogado');
+
+        if (usuarioLogado && (usuarioLogado.tipoAcesso === 'ADMIN' || usuarioLogado.tipoAcesso === 'PROFESSOR')) {
+            setModify(true)
+        } else {
+            setModify(false)
+        }
     }, []);
 
     async function fetchData() {
@@ -62,9 +71,7 @@ const ListScreen = () => {
         const postSingle = await getFastListSearch({ searchPost });
         setData(postSingle)
     }
-    const onBack = () => {
-        navigation.navigate('screens/Login/index')
-    }
+
     return (
         <SafeAreaView style={styles.container}>
             <TextInput style={styles.input}
@@ -73,6 +80,16 @@ const ListScreen = () => {
                 onChange={() => onChange()}
                 value={searchPost}
             />
+            <View style={styles.content}>
+                {!isModify ? '' :
+
+                    <TouchableOpacity style={[styles.button]}
+                        onPress={() => navigation.navigate('screens/PostList/Editar/index')}>
+                        <Text style={[styles.text, styles.colorGreen]}>Novo Post</Text>
+                    </TouchableOpacity>
+                }
+            </View>
+            <Separator />
             <FlatList
                 data={data}
                 renderItem={({ item }) => {
@@ -80,6 +97,7 @@ const ListScreen = () => {
                         <View>
                             <TouchableOpacity onPress={() => handleButtonPress({ item })}>
                                 <Item
+                                    _id={item._id}
                                     titulo={item.titulo}
                                     conteudo={item.conteudo}
                                     autor={item.autor} />
@@ -102,15 +120,35 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 20,
     },
+    content: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     input: {
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 15,
         paddingHorizontal: 10,
-        width: '80%',
+        width: '90%',
         borderRadius: 25,
         marginStart: '10%',
+    },
+    button: {
+        backgroundColor: 'inherit',
+        borderColor: 'grey',
+        borderWidth: 1,
+        width: '50%',
+        alignItems: 'center',
+        padding: 5,
+        borderRadius: 25,
+    },
+    text: {
+        fontSize: 14,
+        fontWeight: 'bold'
+    },
+    colorGreen: {
+        color: 'green'
     },
     separator: {
         marginVertical: 8,

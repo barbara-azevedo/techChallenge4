@@ -1,4 +1,4 @@
-import api from "@/src/api";
+import api from "@/app/api";
 import SessionStorage from 'react-native-session-storage';
 
 export default async function getToken({ email, senha }: { email: any, senha: any }) {

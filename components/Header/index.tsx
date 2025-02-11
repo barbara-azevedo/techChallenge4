@@ -83,7 +83,7 @@ const Header = ({ title }: { title: any }) => {
         <View style={styles.modalContainer}>
           <View style={styles.menu}>
           <TouchableOpacity onPress={() => setMenuVisible(false)} style={styles.closeButton}>
-            <Text style={styles.textMenuText}>EducaOnline</Text>
+            <Text style={styles.textMenuText}>Menu</Text>
             <Ionicons name="menu" size={30} color="black" />
             </TouchableOpacity>
             {data.map((item) => (
@@ -117,10 +117,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'flex-start',
-    alignItems: 'center',
   },
   menu: {
-    width: '100%',
+    maxWidth: '50%',
     backgroundColor: 'white',
     padding: 15,
   },

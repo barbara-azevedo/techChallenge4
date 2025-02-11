@@ -3,8 +3,8 @@ import getUsersAll from "./api";
 import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 import ItemUser from "@/components/common/item.user";
-import { Usuario } from "@/components/common/common.entity";
 import SessionStorage from "react-native-session-storage";
+import Toast from "react-native-toast-message";
 
 export default function Usuarios() {
     const navigation = useNavigation<any>();
@@ -30,7 +30,7 @@ export default function Usuarios() {
             const p = await getUsersAll({ tipoAcesso: usuarioLogado.tipoAcesso });
             if (!p || p === 401) {
                 SessionStorage.clear();
-                navigation.navigate('screens/Login/index')
+                toasMsg('error', 'Usuário não está autenticado', 'screens/Login/index')
             } else if (usuarioLogado) {
                 const list = p.sort((a: any, b: any) => {
                     let x = (a.dtCriacao ? a.dtCriacao : new Date());
@@ -50,7 +50,17 @@ export default function Usuarios() {
         setData(data);
     };
 
-    const onChange = () => {
+    const toasMsg = (type: any, mensagem: any, nav: any) => {
+        Toast.show({
+            type: type,
+            text1: mensagem,
+            onHide() {
+                navigation.navigate(nav)
+            },
+            onPress() {
+                navigation.navigate(nav)
+            },
+        });
     }
 
     return (
@@ -58,14 +68,13 @@ export default function Usuarios() {
             <TextInput style={styles.input}
                 placeholder="Pesquisar Nome"
                 onChangeText={(inputText) => { setUser(inputText) }}
-                onChange={() => onChange()}
                 value={searchPost}
             />
             <Separator />
             <View style={styles.content}>
                 <TouchableOpacity style={[styles.button]}
                     onPress={() => navigation.navigate('screens/Usuario/Editar/index')}>
-                    <Text style={styles.text}>Novo Usuário</Text>
+                    <Text style={[styles.text, styles.colorGreen]}>Novo Usuário</Text>
                 </TouchableOpacity>
             </View>
             <Separator />
@@ -74,11 +83,9 @@ export default function Usuarios() {
                 renderItem={({ item }) => {
                     return (
                         <View>
-                            <TouchableOpacity >
-                                <ItemUser
-                                    user={item} />
-                                <View style={{ width: "100%", height: 1, backgroundColor: "gray" }} />
-                            </TouchableOpacity>
+                            <ItemUser
+                                user={item} />
+                            <View style={{ width: "100%", height: 1, backgroundColor: "gray" }} />
                         </View>
                     );
                 }}
@@ -88,6 +95,7 @@ export default function Usuarios() {
                 onEndReached={loadMoreData}
                 onEndReachedThreshold={0.5}
             />
+            <Toast />
         </SafeAreaView>
     );
 }
@@ -124,6 +132,9 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         fontWeight: 'bold'
+    },
+    colorGreen: {
+        color: 'green'
     },
     separator: {
         marginVertical: 8,

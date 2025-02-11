@@ -1,9 +1,10 @@
-import { Image, Text, View, TextInput, Button, Alert, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, Text, View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
-import getToken from "./api";
+import Toast from 'react-native-toast-message';
 import SessionStorage from 'react-native-session-storage';
+import getToken from "./api";
 
 export default function Login() {
     const [email, inputEmail] = useState('')
@@ -11,30 +12,36 @@ export default function Login() {
     const navigation = useNavigation<any>();
 
     async function getTokenUser() {
-
         if (email === undefined || email === '' && senha === undefined || senha === '') {
-            Alert.alert('Erro:', 'Digite suas credenciais !!!');
+            toasMsg('error', 'Informe suas credenciais !')
             return;
-        }
-        await getToken({ email, senha });
-        const data = SessionStorage.getItem("@usuarioLogado")
-        if (data) {
-            Alert.alert(
-                'Login',
-                `Usuário autenticado com sucesso`,
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => console.log('OK Pressed'),
-                        style: 'cancel',
-                    },
-                ],
-                { cancelable: true }
-            );
-            navigation.navigate('Home/index')
         } else {
-            Alert.alert('Erro:', 'Usuário não encontrado!!!');
+            let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+            if (email.length === 0) {
+                toasMsg('error', 'E-mail não informado!')
+                return;
+            } else if (reg.test(email) === false) {
+                toasMsg('error', 'E-mail invalido!')
+                return;
+            }
+            await getToken({ email, senha });
+     
+            const data = SessionStorage.getItem("@usuarioLogado")
+            if (data) {
+                navigation.navigate('Home/index')
+                toasMsg('success', 'Usuário autenticado')
+            } else {
+                toasMsg('error', 'Usuário não encontrado!!!');
+            }
         }
+    }
+
+    const toasMsg = (type: any, mensagem: any) => {
+        Toast.show({
+            type: type,
+            text1: mensagem
+        });
     }
 
     const logout = () => {
@@ -46,6 +53,7 @@ export default function Login() {
     }
 
     return (
+
         <LinearGradient
             style={styles.container}
             colors={['#87CEEB', '#FFFFFF']}
@@ -65,7 +73,9 @@ export default function Login() {
                     <Text>Logar</Text>
                 </TouchableOpacity>
             </View>
+            <Toast />
         </LinearGradient>
+
     );
 }
 
@@ -101,5 +111,5 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         margin: 'auto'
-    } 
+    }
 })
