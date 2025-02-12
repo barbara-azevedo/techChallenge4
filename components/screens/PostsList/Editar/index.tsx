@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
-import { Text, View, TextInput, Button, Alert, StyleSheet, TouchableOpacity, SectionList, ScrollView } from "react-native";
+import { Text, View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { useNavigation } from '@react-navigation/native'
 import SessionStorage from 'react-native-session-storage';
 import { LinearGradient } from "expo-linear-gradient";
-import { Textarea } from 'react-native-ficus-ui';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { getFastListAutor, postRemove, postSave, postUpdate } from '../api';
 import Toast from 'react-native-toast-message';
-import { green } from 'react-native-reanimated/lib/typescript/Colors';
 
 export default function EditPost({ route }: { route: any }) {
     const navigation = useNavigation<any>();
@@ -211,7 +209,7 @@ export default function EditPost({ route }: { route: any }) {
                 <View style={styles.btnGroup}>
                     {!_id ?
                         <TouchableOpacity style={[styles.button, styles.buttonSpace]} onPress={handleButtonPress}>
-                            <Text>Salvar</Text>
+                            <Text style={[styles.colorGreen, styles.text]}>Salvar</Text>
                         </TouchableOpacity>
                         :
                         <TouchableOpacity

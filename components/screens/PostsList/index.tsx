@@ -100,6 +100,7 @@ const ListScreen = () => {
                                     _id={item._id}
                                     titulo={item.titulo}
                                     conteudo={item.conteudo}
+                                    dtCriacao={item.dtCriacao}
                                     autor={item.autor} />
                                 <View style={{ width: "100%", height: 1, backgroundColor: "gray" }} />
                             </TouchableOpacity>

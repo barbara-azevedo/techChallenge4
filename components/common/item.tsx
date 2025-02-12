@@ -4,7 +4,7 @@ import { Autor } from './common.entity';
 import { useNavigation } from '@react-navigation/native'
 import SessionStorage from 'react-native-session-storage';
 
-const Item = ({_id, titulo, conteudo, autor }: {_id: any, titulo: any, conteudo: any, autor: any }) => {
+const Item = ({_id, titulo, conteudo, dtCriacao, autor }: {_id: any, titulo: any, conteudo: any,dtCriacao: any, autor: any }) => {
 
   const navigation = useNavigation<any>();
   const Separator = () => <View style={styles.separator} />;
@@ -38,7 +38,7 @@ const Item = ({_id, titulo, conteudo, autor }: {_id: any, titulo: any, conteudo:
         <Text style={styles.autorContent}>Autor:  </Text><Text>{aut[0].nome}</Text>
       </Text>
       <Text>
-        <Text style={styles.autorContent}>Data:  </Text><Text>{formatDate(aut[0].dtCriacao)}</Text>
+        <Text style={styles.autorContent}>Data:  </Text><Text>{formatDate(dtCriacao)}</Text>
       </Text>
       {!isModify ? '' :
         <View>
