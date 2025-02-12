@@ -21,7 +21,7 @@ const ItemSingle = ({ titulo, conteudo, autor }: { titulo: any, conteudo: any, a
 };
 
 export function formatDate(date: any) {
-  return new Date(date).toLocaleDateString([], { year: 'numeric', month: 'long', day: 'numeric' });
+  return new Date(date).toLocaleDateString(['pt-br'], { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
 const styles = StyleSheet.create({
