@@ -40,8 +40,9 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 5,
     backgroundColor: '#f8f8f8',
-    borderTopColor: '#ddd',
     borderRadius: 10,
+    borderColor: '#ddd',
+    borderWidth: 0.5,
   },
   content: {
     alignItems: 'center',

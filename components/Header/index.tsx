@@ -1,13 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons';
 import SessionStorage from 'react-native-session-storage';
+import { useWindowDimensions } from "react-native";
 
 const Header = ({ title }: { title: any }) => {
 
   const navigation = useNavigation<any>();
   const [menuVisible, setMenuVisible] = useState(false);
+  const { width } = useWindowDimensions();
+
+  const styles = StyleSheet.create({
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: '#f8f8f8',
+      padding: 15,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ddd',
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+    modalContainer: {
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      justifyContent: 'flex-start',
+    },
+    menu: {
+      marginLeft: width > 768 ? '80%' : '50%',
+      maxWidth: width > 768 ? '20%' : '50%',
+      backgroundColor: 'white',
+      padding: 15,
+    },
+    menuItem: {
+      paddingVertical: 15,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ddd',
+    },
+    menuItemText: {
+      alignSelf: width > 768 ? 'center': 'auto',
+      fontSize: 18,
+    },
+    closeButton: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    textMenuText: {
+      fontSize: 20,
+      fontWeight: 'bold',
+    }
+  });
 
   const data = [
     { label: 'Home', value: '0' },
@@ -17,7 +64,7 @@ const Header = ({ title }: { title: any }) => {
   ];
 
   useEffect(() => {
-      setValue(null)
+    setValue(null)
   }, []);
 
   const [value, setValue] = useState(null);
@@ -51,16 +98,16 @@ const Header = ({ title }: { title: any }) => {
     setIsLoggedIn(!!data);
   };
 
-  
+
   useEffect(() => {
-    checkLoginStatus(); 
+    checkLoginStatus();
     const intervalId = setInterval(checkLoginStatus, 500);
 
     return () => clearInterval(intervalId);
   }, []);
 
   if (isLoggedIn === null) {
-    return null; 
+    return null;
   }
 
   if (!isLoggedIn) {
@@ -80,66 +127,26 @@ const Header = ({ title }: { title: any }) => {
         visible={menuVisible}
         onRequestClose={() => setMenuVisible(false)}
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.menu}>
-          <TouchableOpacity onPress={() => setMenuVisible(false)} style={styles.closeButton}>
-            <Text style={styles.textMenuText}>Menu</Text>
-            <Ionicons name="menu" size={30} color="black" />
-            </TouchableOpacity>
-            {data.map((item) => (
-              <TouchableOpacity key={item.value} style={styles.menuItem} onPress={() => onNavigate(item)}>
-                <Text style={styles.menuItemText}>{item.label}</Text>
-              </TouchableOpacity>
-            ))}
+        <TouchableWithoutFeedback onPress={() => setMenuVisible(false)}>
+          <View style={styles.modalContainer}>
+            <TouchableWithoutFeedback>
+              <View style={styles.menu}>
+                <TouchableOpacity onPress={() => setMenuVisible(false)} style={styles.closeButton}>
+                  <Text style={styles.textMenuText}>Menu</Text>
+                  <Ionicons name="menu" size={30} color="black" />
+                </TouchableOpacity>
+                {data.map((item) => (
+                  <TouchableOpacity key={item.value} style={styles.menuItem} onPress={() => onNavigate(item)}>
+                    <Text style={styles.menuItemText}>{item.label}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </TouchableWithoutFeedback>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
-
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#f8f8f8',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-start',
-  },
-  menu: {
-    maxWidth: '50%',
-    backgroundColor: 'white',
-    padding: 15,
-  },
-  menuItem: {
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  menuItemText: {
-    fontSize: 18,
-  },
-  closeButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  textMenuText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  }
-});
 
 export default Header;

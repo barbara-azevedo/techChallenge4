@@ -219,9 +219,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   content: {
-    flex: 0.6,
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 20,
   },
   input: {
     height: 40,
