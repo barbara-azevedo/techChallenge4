@@ -58,8 +58,8 @@ const Header = ({ title }: { title: any }) => {
 
   const data = [
     { label: 'Home', value: '0' },
-    { label: 'Usuários', value: '1' },
     { label: 'Posts', value: '2' },
+    { label: 'Usuários', value: '1' },
     { label: 'Logout', value: '3' },
   ];
 
@@ -118,7 +118,9 @@ const Header = ({ title }: { title: any }) => {
     <View style={styles.header}>
       <Text style={styles.title}>{title}</Text>
       <TouchableOpacity onPress={() => setMenuVisible(true)}>
+        {menuVisible ? '' : 
         <Ionicons name="menu" size={30} color="black" />
+        }
       </TouchableOpacity>
 
       <Modal
@@ -133,7 +135,7 @@ const Header = ({ title }: { title: any }) => {
               <View style={styles.menu}>
                 <TouchableOpacity onPress={() => setMenuVisible(false)} style={styles.closeButton}>
                   <Text style={styles.textMenuText}>Menu</Text>
-                  <Ionicons name="menu" size={30} color="black" />
+                  <Ionicons name="close" size={30} color="black" />
                 </TouchableOpacity>
                 {data.map((item) => (
                   <TouchableOpacity key={item.value} style={styles.menuItem} onPress={() => onNavigate(item)}>

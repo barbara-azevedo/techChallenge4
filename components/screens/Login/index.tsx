@@ -1,5 +1,5 @@
-import { Image, Text, View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
-import { useState } from "react";
+import { Image, Text, View, TextInput, StyleSheet, TouchableOpacity, Platform } from "react-native";
+import { useEffect, useState } from "react";
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
 import Toast from 'react-native-toast-message';
@@ -10,6 +10,19 @@ export default function Login() {
     const [email, inputEmail] = useState('')
     const [senha, inputPass] = useState('')
     const navigation = useNavigation<any>();
+    const [sistema, setSistema] = useState('')
+
+    useEffect(() => {
+        if (Platform.OS === 'ios') {
+            setSistema('cel')
+        } else if (Platform.OS === 'android') {
+            setSistema('cel')
+        } else if (Platform.OS === 'web') {
+            setSistema('')
+        } else {
+            setSistema('cel')
+        }
+    }, []);
 
     async function getTokenUser() {
         if (email === undefined || email === '' && senha === undefined || senha === '') {
@@ -26,7 +39,7 @@ export default function Login() {
                 return;
             }
             await getToken({ email, senha });
-     
+
             const data = SessionStorage.getItem("@usuarioLogado")
             if (data) {
                 navigation.navigate('Home/index')
@@ -52,6 +65,8 @@ export default function Login() {
         getTokenUser();
     }
 
+
+
     return (
 
         <LinearGradient
@@ -60,18 +75,37 @@ export default function Login() {
         >
             <View style={styles.content}>
                 <Image source={require("@/assets/images/educaonline-logo.png")} style={styles.image} />
-                <TextInput style={styles.input} placeholder="E-mail"
-                    onChangeText={inputEmail}
-                    value={email}
-                />
-                <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}
-                    onChangeText={inputPass}
-                    value={senha}
-                />
-
-                <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
-                    <Text>Logar</Text>
-                </TouchableOpacity>
+                {sistema && sistema === 'cel' ?
+                    <TextInput style={[styles.input]} placeholder="E-mail"
+                        onChangeText={inputEmail}
+                        value={email}
+                    />
+                    :
+                    <TextInput style={[styles.input, styles.widthInput]} placeholder="E-mail"
+                        onChangeText={inputEmail}
+                        value={email}
+                    />
+                }
+                {sistema && sistema === 'cel' ?
+                    <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}
+                        onChangeText={inputPass}
+                        value={senha}
+                    />
+                    :
+                    <TextInput style={[styles.input, styles.widthInput]} placeholder="Senha" secureTextEntry={true}
+                        onChangeText={inputPass}
+                        value={senha}
+                    />
+                }
+                {sistema && sistema === 'cel' ?
+                    <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+                        <Text>Logar</Text>
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity id="web" style={styles.buttonWeb} onPress={handleButtonPress}>
+                        <Text>Logar</Text>
+                    </TouchableOpacity>
+                }
             </View>
             <Toast />
         </LinearGradient>
@@ -106,6 +140,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 5,
         borderRadius: 25,
+    },
+    buttonWeb: {
+        backgroundColor: 'inherit',
+        borderColor: 'grey',
+        borderWidth: 1,
+        alignItems: 'center',
+        width: 300,
+        padding: 5,
+        borderRadius: 25,
+    },
+    buttonWitdhCel: {
+        width: '50%',
+    },
+    widthInput: {
+        width: "30%"
     },
     image: {
         width: 200,
