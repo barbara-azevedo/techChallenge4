@@ -65,7 +65,7 @@ npm install
 ````
 4. Execute o projeto
 ````bash
-npx expo start
+npm start
 ````
 É possível abrir o emulador do app com as seguintes opções:
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
@@ -92,5 +92,5 @@ npm install
 ````
 5. Execute o projeto
 ````bash
-npm run start:dev
+npm start
 ````
